@@ -94,7 +94,7 @@ def add_sphere(polygons, cx, cy, cz, r, step ):
                 next_lat = lat * step + longt + step
             next_long = index + 1
             next_bottom = next_lat + 1
-
+# This stuff really confused me -- I asked around for help in completing this.
             add_polygon(polygons,
                         points[index][0],
                         points[index][1],
@@ -161,6 +161,7 @@ def add_torus(polygons, cx, cy, cz, r0, r1, step ):
             else:
                 next_top = next_lat + 1
                 next_bottom = index + 1
+# This stuff really confused me -- I asked around for help in completing this.
 
             add_polygon(polygons,
                     points[index][0],
