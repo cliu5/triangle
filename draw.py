@@ -86,24 +86,39 @@ def add_sphere(polygons, cx, cy, cz, r, step ):
 
     step+= 1
     for lat in range(lat_start, lat_stop):
-        for longt in range(longt_start, longt_stop+1):
+        for longt in range(longt_start, longt_stop):
             index = lat * step + longt
-            #This part was confusing-- had to ask around for help
-            add_polygon(polygons, points[index][0], points[index][1],
-                        points[index][2], points[(index+1)%(len(points))][0],
-                        points[(index+1)%(len(points))][1],
-                        points[(index+1)%(len(points))][2],
-                        points[(index+step)%(len(points))][0],
-                        points[(index+step)%(len(points))][1],
-                        points[(index+step)%(len(points))][2])
-            add_polygon(polygons, points[index+1][0], points[index+1][1],
-                        points[index+1][2],
-                        points[(index+step+1)%(len(points))][0],
-                        points[(index+step+1)%(len(points))][1],
-                        points[(index+step+1)%(len(points))][2],
-                        points[(index+step)%(len(points))][0],
-                        points[(index+step)%(len(points))][1],
-                        points[(index+step)%(len(points))][2])
+            if (lat == step - 2): #begining and end of sphere
+                next_lat = longt
+            else:
+                next_lat = lat * step + longt + step
+            next_long = index + 1
+            next_bottom = next_lat + 1
+
+            add_polygon(polygons,
+                        points[index][0],
+                        points[index][1],
+                        points[index][2],
+                        points[next_long][0],
+                        points[next_long][1],
+                        points[next_long][2],
+                        points[next_lat][0],
+                        points[next_lat][1],
+                        points[next_lat][2]
+            )
+            if not longt == 0 or not longt == step - 2:
+                add_polygon(polygons,
+                            points[next_lat][0],
+                            points[next_lat][1],
+                            points[next_lat][2],
+                            points[next_long][0],
+                            points[next_long][1],
+                            points[next_long][2],
+                            points[next_bottom][0],
+                            points[next_bottom][1],
+                            points[next_bottom][2]
+                )
+
 
 def generate_sphere( cx, cy, cz, r, step ):
     points = []
@@ -147,7 +162,7 @@ def add_torus(polygons, cx, cy, cz, r0, r1, step ):
                 next_top = next_lat + 1
                 next_bottom = index + 1
 
-            add_polygon(edges,
+            add_polygon(polygons,
                     points[index][0],
                     points[index][1],
                     points[index][2],
@@ -157,7 +172,7 @@ def add_torus(polygons, cx, cy, cz, r0, r1, step ):
                     points[next_top][0],
                     points[next_top][1],
                     points[next_top][2])
-            add_polygon(edges,
+            add_polygon(polygons,
                     points[next_top][0],
                     points[next_top][1],
                     points[next_top][2],
